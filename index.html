@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Counter Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/redux@4.2.0/dist/redux.min.js"></script>
+</head>
+
+<body>
+    <div class="w-screen min-h-screen p-10 bg-gray-100 text-slate-700">
+        <!-- header -->
+        <h1 class="max-w-md mx-auto text-center text-2xl font-bold">
+            Simple Multi Counter Application
+        </h1>
+
+        <!-- counters -->
+        <div class="mx-auto max-w-md mt-10 space-y-5" id="counter-container"></div>
+        <div class="mt-10 mx-auto max-w-md text-center">
+            <button id="add" class="bg-indigo-400 text-white px-3 py-2 rounded shadow">
+                Add Counter
+            </button>
+            <button id="reset" class="bg-red-400 text-white px-3 py-2 rounded shadow">
+                Reset
+            </button>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

@@ -18,42 +18,6 @@ const INCREMENT = "increment";
 const DECREMENT = "decrement";
 const ADD = "add";
 
-// create reducer function
-function counterReducer(state = initialState, action) {
-    if (action.type === ADD) {
-        const copyState = [...state];
-        copyState.push({
-            id: id + 1,
-            value: id - 1,
-        });
-
-        return copyState;
-    } else if (action.type === INCREMENT) {
-        const copyState = [...state];
-
-        const index = copyState.findIndex(
-            (item) => item.id === action.payload.id
-        );
-
-        copyState[index].value += action.payload.value;
-
-        return copyState;
-    } else if (action.type === DECREMENT) {
-        const copyState = [...state];
-        const index = copyState.findIndex(
-            (item) => item.id === action.payload.id
-        );
-        copyState[index].value -= action.payload.value;
-        return copyState;
-    } else {
-        return state;
-    }
-}
-
-
-
-// create store
-const store = Redux.createStore(counterReducer, initialState);
 
 // action creators
 const increment = (id, value) => {
@@ -76,6 +40,50 @@ const decrement = (id, value) => {
     };
 };
 
+// create reducer function
+function counterReducer(state = initialState, action) {
+    if (action.type === ADD) {
+
+        const copyState = [
+            ...state,
+            {
+                id: id + 1,
+                value: 0,
+            }
+        ];
+        console.log(copyState);
+
+        return copyState;
+    } else if (action.type === INCREMENT) {
+
+        const copyState = [...state];
+        console.log(action.payload.id);
+        const index = copyState.findIndex(
+            (item) => item.id === action.payload.id
+        );
+
+        copyState[index].value = action.payload.value + copyState[index].value;
+        return copyState;
+        s
+    } else if (action.type === DECREMENT) {
+        const copyState = [...state];
+        const index = copyState.findIndex(
+            (item) => item.id === action.payload.id
+        );
+        copyState[index].value -= action.payload.value;
+        return copyState;
+    } else {
+        return state;
+    }
+}
+
+
+
+// create store
+const store = Redux.createStore(counterReducer);
+
+
+
 // create new counter div when click add counter button
 addBtn.addEventListener("click", function () {
     store.dispatch({
@@ -86,6 +94,7 @@ addBtn.addEventListener("click", function () {
 // create render function for show updated state in ui
 function render() {
     const state = store.getState();
+    counterCountainer.innerHTML = "";
     state.forEach((item) => {
         const div = document.createElement("div");
         div.classList =
@@ -101,14 +110,14 @@ function render() {
             "bg-indigo-400 text-white px-3 py-2 rounded shadow";
         incrementBtn.innerText = "Increment";
         incrementBtn.onclick = function () {
-            store.dispatch(increment(item.id, item.id));
+            store.dispatch(increment(item.id, 5));
         };
         const decrementBtn = document.createElement("button");
         decrementBtn.classList =
             "bg-red-400 text-white px-3 py-2 rounded shadow";
         decrementBtn.innerText = "Decrement";
         decrementBtn.onclick = function () {
-            store.dispatch(decrement(item.id, item.id));
+            store.dispatch(decrement(item.id, 5));
         };
         btnContainer.appendChild(incrementBtn);
         btnContainer.appendChild(decrementBtn);

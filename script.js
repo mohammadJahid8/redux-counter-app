@@ -114,8 +114,8 @@ resetBtn.addEventListener("click", function () {
 
 
 function render() {
-    const state = store.getState();
     counterCountainer.innerHTML = "";
+    const state = store.getState();
     state.forEach((item) => {
 
         const div = document.createElement("div");
@@ -130,14 +130,20 @@ function render() {
         const incrementInput = document.createElement("input");
         incrementInput.setAttribute("type", "number");
         incrementInput.setAttribute("placeholder", "Enter value");
-        incrementInput.classList = "w-50 border border-gray-300 rounded-lg";
+
+        incrementInput.classList = "w-28 p-1 border border-gray-300 rounded-lg";
+        incrementInput.onchange = function () {
+            store.dispatch(increment(item.id, parseInt(incrementInput.value)));
+        }
         const incrementBtn = document.createElement("button");
         incrementBtn.classList =
             "bg-indigo-400 text-white px-3 py-2 rounded shadow";
         incrementBtn.innerText = "Increment";
-        incrementBtn.onclick = function () {
-            store.dispatch(increment(item.id, 5));
-        };
+
+        // take 
+        // incrementBtn.onclick = function () {
+        //     store.dispatch(increment(item.id, inputValue));
+        // };
         const decrementBtn = document.createElement("button");
         decrementBtn.classList =
             "bg-red-400 text-white px-3 py-2 rounded shadow";
@@ -149,8 +155,9 @@ function render() {
         btnContainer.appendChild(incrementBtn);
         btnContainer.appendChild(decrementBtn);
         div.appendChild(btnContainer);
-        // counterCountainer.innerHTML = "";
+
         counterCountainer.appendChild(div);
+        // counterCountainer.innerHTML = "";
 
     });
 }

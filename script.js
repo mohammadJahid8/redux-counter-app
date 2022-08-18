@@ -1,6 +1,9 @@
 //select dom element
 let counterCountainer = document.getElementById("counter-container");
 const addBtn = document.getElementById("add");
+const resetBtn = document.getElementById("reset");
+const inputValue = document.getElementById("input-field");
+
 
 // create initial state
 let initialState = [
@@ -17,6 +20,7 @@ let id = 1;
 const INCREMENT = "increment";
 const DECREMENT = "decrement";
 const ADD = "add";
+const RESET = "reset";
 
 
 // action creators
@@ -43,35 +47,47 @@ const decrement = (id, value) => {
 // create reducer function
 function counterReducer(state = initialState, action) {
     if (action.type === ADD) {
+        // add counter div after clicking addBtn
+        const newCounter = {
+            id: id + 1,
+            value: 0,
+        }
+        id++;
+        return [...state, newCounter];
 
-        const copyState = [
-            ...state,
-            {
-                id: id + 1,
+
+    }
+    else if (action.type === RESET) {
+        // reset all counter values
+        const updatedState = state.map((item) => {
+            return {
+                ...item,
                 value: 0,
-            }
-        ];
-        console.log(copyState);
+            };
+        })
 
-        return copyState;
-    } else if (action.type === INCREMENT) {
 
-        const copyState = [...state];
+
+        return updatedState;
+    }
+    else if (action.type === INCREMENT) {
+
+        const updatedState = [...state];
         console.log(action.payload.id);
-        const index = copyState.findIndex(
+        const index = updatedState.findIndex(
             (item) => item.id === action.payload.id
         );
 
-        copyState[index].value = action.payload.value + copyState[index].value;
-        return copyState;
-        s
+        updatedState[index].value = action.payload.value + updatedState[index].value;
+        return updatedState;
+
     } else if (action.type === DECREMENT) {
-        const copyState = [...state];
-        const index = copyState.findIndex(
+        const updatedState = [...state];
+        const index = updatedState.findIndex(
             (item) => item.id === action.payload.id
         );
-        copyState[index].value -= action.payload.value;
-        return copyState;
+        updatedState[index].value -= action.payload.value;
+        return updatedState;
     } else {
         return state;
     }
@@ -90,12 +106,18 @@ addBtn.addEventListener("click", function () {
         type: ADD,
     });
 });
+resetBtn.addEventListener("click", function () {
+    store.dispatch({
+        type: RESET,
+    });
+});
 
-// create render function for show updated state in ui
+
 function render() {
     const state = store.getState();
     counterCountainer.innerHTML = "";
     state.forEach((item) => {
+
         const div = document.createElement("div");
         div.classList =
             "p-4 h-auto flex flex-col items-center justify-center space-y-5 bg-white rounded shadow counter";
@@ -105,6 +127,10 @@ function render() {
         counter.innerText = item.value;
         const btnContainer = document.createElement("div");
         btnContainer.classList = "flex space-x-3";
+        const incrementInput = document.createElement("input");
+        incrementInput.setAttribute("type", "number");
+        incrementInput.setAttribute("placeholder", "Enter value");
+        incrementInput.classList = "w-50 border border-gray-300 rounded-lg";
         const incrementBtn = document.createElement("button");
         incrementBtn.classList =
             "bg-indigo-400 text-white px-3 py-2 rounded shadow";
@@ -119,11 +145,13 @@ function render() {
         decrementBtn.onclick = function () {
             store.dispatch(decrement(item.id, 5));
         };
+        btnContainer.appendChild(incrementInput);
         btnContainer.appendChild(incrementBtn);
         btnContainer.appendChild(decrementBtn);
         div.appendChild(btnContainer);
         // counterCountainer.innerHTML = "";
         counterCountainer.appendChild(div);
+
     });
 }
 
